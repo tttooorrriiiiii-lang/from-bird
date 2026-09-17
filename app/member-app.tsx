@@ -37,11 +37,14 @@ export default function MemberApp(){
   if(!ready)return <main className="setup"><span className="loader"/><p>読み込み中…</p></main>;
   if(["/login","/signup","/registration-complete","/forgot-password","/reset-password"].includes(route))return <Auth route={route} user={user}/>;
   if(route==="/")return <Home user={user}/>;
+  if(["/projects","/news","/about","/contact"].includes(route))return <PublicPage route={route} user={user}/>;
   if(!user)return <Home user={null}/>;
   return <Shell route={route} user={user}><Protected route={route} user={user}/></Shell>;
 }
 
 function Logo(){return <a className="logo" href="/" onClick={nav("/")}><span>FROM BIRD</span><span className="logo-bird" aria-hidden="true">◆</span></a>}
+function PublicHeader({user}:{user:User|null}){return <header className="topbar public-topbar"><Logo/><span className="tagline">考えることを、遊ぶ。</span><nav aria-label="メインナビゲーション"><a href="/projects" onClick={nav("/projects")}>PROJECTS</a><a href="/news" onClick={nav("/news")}>NEWS</a><a href="/about" onClick={nav("/about")}>ABOUT</a><a href="/contact" onClick={nav("/contact")}>CONTACT</a></nav><a className="member-link" href={user?"/mypage":"/login"} onClick={nav(user?"/mypage":"/login")}><span className="member-link-full">{user?"MY PAGE":"ログイン / 新規登録"}</span><span className="member-link-short">{user?"MY PAGE":"ログイン"}</span></a></header>}
+function PublicFooter(){return <footer><Logo/><nav><a href="/projects" onClick={nav("/projects")}>PROJECTS</a><a href="/news" onClick={nav("/news")}>NEWS</a><a href="/about" onClick={nav("/about")}>ABOUT</a><a href="/contact" onClick={nav("/contact")}>CONTACT</a></nav><div className="socials"><span>◎</span><span>𝕏</span><span>▶</span></div><small>© 2026 FROM BIRD</small></footer>}
 type CmsContent = {
   id:string; title:string; slug:string; description:string|null; url:string|null;
   thumbnail_path:string|null; is_featured:boolean; sort_order:number;
@@ -122,7 +125,7 @@ function Home({user}:{user:User|null}){
   },[]);
 
   return <main className="home-original" id="top">
-    <header className="topbar"><Logo/><span className="tagline">考えることを、遊ぶ。</span><nav aria-label="メインナビゲーション"><a href="#projects">PROJECTS</a><a href="#news">NEWS</a><a href="#about">ABOUT</a></nav><a className="search" href="#projects" aria-label="サイト内の内容を見る"/><a className="member-link" href={user?"/mypage":"/login"} onClick={nav(user?"/mypage":"/login")}><span className="member-link-full">{user?"MY PAGE":"ログイン / 新規登録"}</span><span className="member-link-short">{user?"MY PAGE":"ログイン"}</span></a><a className="question-button" href="#question">どこから考える？</a></header>
+    <PublicHeader user={user}/>
     <section className="intro"><div className="intro-copy"><h1>今日は、<br/>どこから考える？</h1><p className="intro-sub">いつもの見方を、すこしだけずらしてみる。</p><span className="short-rule"/><p className="intro-en">SMALL EXPERIMENTS<br/>FOR ANOTHER VIEW.</p></div><figure className="hero-photo"><Image src="/from-bird-hero-v2.jpg" alt="青空を飛ぶ鳥" fill priority sizes="(max-width: 580px) 100vw, 46vw"/></figure><aside className="intro-side"><strong>FROM<br/>BIRD</strong><span className="side-line"/><p>THINK<br/>PLAY<br/>EXPLORE</p></aside></section>
 
     <section className="category-grid" aria-label="考える入口">
@@ -140,27 +143,25 @@ function Home({user}:{user:User|null}){
     <section className="daily-question" id="question"><div className="question-label"><h2>今日の問い</h2><span>TODAY&apos;S QUESTION</span></div><div className="question-copy"><p>「コーヒーの反対って、なんだろう？」</p><small>一つの問いから、いろんな世界がひらける。</small></div><a className="think-button" href="/tools/think" onClick={nav("/tools/think")}>考えてみる <span>→</span></a><div className="coffee-crop" aria-hidden="true"><img src="/from-bird-reference.jpeg" alt=""/></div></section>
 
     <section className="pickup" id="projects">
-      <div className="section-title"><div><h2>ピックアップ</h2><span>PICK UP PROJECTS</span></div><a href="#projects">すべてのプロジェクトを見る　→</a></div>
-      <div className="pickup-grid">{projects.map(p=>{
-        const kind=projectKind(p), thumb=projectThumb(p.thumbnail_path), href=p.url||"#";
-        return <a className="project" href={href} target={href==="#"?undefined:"_blank"} rel={href==="#"?undefined:"noreferrer"} key={p.id}>
-          <div className={`project-visual ${kind}`} aria-hidden="true">
-            {thumb?<img className="cms-project-thumb" src={thumb} alt=""/>:null}
-            {!thumb&&kind==="root"&&<><span className="root-core">木</span><i className="r1">葉</i><i className="r2">幹</i><i className="r3">根</i><i className="r4">森</i><i className="r5">枝</i></>}
-            {!thumb&&kind==="stairs"&&<><span/><span/><span/><i/></>}
-            {!thumb&&kind==="cms-generic"&&<b className="cms-generic-mark">FROM BIRD</b>}
-          </div>
-          <div className="project-copy"><h3>{p.title}</h3><p>{p.description||"小さな実験をひらく。"}</p><span>→</span></div>
-        </a>
-      })}</div>
+      <div className="section-title"><div><h2>ピックアップ</h2><span>PICK UP PROJECTS</span></div><a href="/projects" onClick={nav("/projects")}>すべてのプロジェクトを見る　→</a></div>
+      <div className="pickup-grid">{projects.map(p=><ProjectCard project={p} key={p.id}/>)}</div>
     </section>
 
     <section className="brand-row" id="about"><div className="news" id="news"><h2>NEWS</h2><span className="short-rule"/><dl>
       {newsItems.map(n=><div key={n.id}><dt>{newsDate(n.published_at)}</dt><dd>{n.link_url?<a href={n.link_url} target="_blank" rel="noreferrer">{n.title}</a>:n.title}</dd></div>)}
-      </dl><a href="#news">すべてのニュースを見る　→</a></div><div className="shadow-message"><p>見えないものを、<br/>少しだけ見てみるために。</p><span>FOR<br/>ANOTHER<br/>VIEW.</span></div><div className="shadow-photo" aria-hidden="true"><svg viewBox="411 1084 432 201" preserveAspectRatio="xMidYMid slice"><image href="/from-bird-reference.jpeg" x="0" y="0" width="1145" height="1374"/></svg></div><div className="brand-copy"><strong>FROM<br/>BIRD</strong><p>考えることを、遊ぶ。</p><span className="short-rule"/></div></section>
-    <footer><Logo/><nav><a href="#projects">PROJECTS</a><a href="#news">NEWS</a><a href="#about">ABOUT</a><a href="mailto:hello@frombird.com">CONTACT</a></nav><div className="socials"><span>◎</span><span>𝕏</span><span>▶</span></div><small>© 2026 FROM BIRD</small></footer>
+      </dl><a href="/news" onClick={nav("/news")}>すべてのニュースを見る　→</a></div><div className="shadow-message"><p>見えないものを、<br/>少しだけ見てみるために。</p><span>FOR<br/>ANOTHER<br/>VIEW.</span></div><div className="shadow-photo" aria-hidden="true"><svg viewBox="411 1084 432 201" preserveAspectRatio="xMidYMid slice"><image href="/from-bird-reference.jpeg" x="0" y="0" width="1145" height="1374"/></svg></div><div className="brand-copy"><strong>FROM<br/>BIRD</strong><p>考えることを、遊ぶ。</p><span className="short-rule"/></div></section>
+    <PublicFooter/>
   </main>
 }
+
+function ProjectCard({project:p}:{project:CmsContent}){const kind=projectKind(p),thumb=projectThumb(p.thumbnail_path),href=p.url||"#";return <a className="project" href={href} target={href==="#"?undefined:"_blank"} rel={href==="#"?undefined:"noreferrer"}><div className={`project-visual ${kind}`} aria-hidden="true">{thumb?<img className="cms-project-thumb" src={thumb} alt=""/>:null}{!thumb&&kind==="root"&&<><span className="root-core">木</span><i className="r1">葉</i><i className="r2">幹</i><i className="r3">根</i><i className="r4">森</i><i className="r5">枝</i></>}{!thumb&&kind==="stairs"&&<><span/><span/><span/><i/></>}{!thumb&&kind==="cms-generic"&&<b className="cms-generic-mark">FROM BIRD</b>}</div><div className="project-copy"><h3>{p.title}</h3><p>{p.description||"小さな実験をひらく。"}</p><span>→</span></div></a>}
+
+function PublicPage({route,user}:{route:string;user:User|null}){return <main className="public-page"><PublicHeader user={user}/>{route==="/projects"&&<ProjectsPage/>}{route==="/news"&&<NewsPage/>}{route==="/about"&&<AboutPage/>}{route==="/contact"&&<ContactPage/>}<PublicFooter/></main>}
+function PublicTitle({en,ja,lead}:{en:string;ja:string;lead:string}){return <header className="public-title"><span>{en}</span><h1>{ja}</h1><p>{lead}</p></header>}
+function ProjectsPage(){const [items,setItems]=useState<CmsContent[]>(fallbackProjects);useEffect(()=>{let alive=true;supabase.from("contents").select("id,title,slug,description,url,thumbnail_path,is_featured,sort_order").eq("status","published").order("sort_order",{ascending:true}).then(({data,error})=>{if(alive&&!error&&data?.length)setItems(data as CmsContent[])});return()=>{alive=false}},[]);return <><PublicTitle en="PROJECTS" ja="考える入口。" lead="ことば、色、かたち、物語、問い。いつもと違う場所から眺めるための、小さな実験です。"/><section className="projects-page-grid">{items.map((p,i)=><article key={p.id}><span>{String(i+1).padStart(2,"0")}　SMALL EXPERIMENT</span><ProjectCard project={p}/></article>)}</section><section className="public-cta"><p>入口は、どこからでも。</p><h2>今日ひっかかったものから、<br/>はじめてみてください。</h2><a href="/login" onClick={nav("/login")}>記録を残すためにログイン →</a></section></>}
+function NewsPage(){const [items,setItems]=useState<CmsNews[]>(fallbackNews);useEffect(()=>{let alive=true;supabase.from("news").select("id,title,body,link_url,published_at").eq("status","published").order("published_at",{ascending:false}).then(({data,error})=>{if(alive&&!error&&data?.length)setItems(data as CmsNews[])});return()=>{alive=false}},[]);return <><PublicTitle en="NEWS" ja="新しいできごと。" lead="FROM BIRDの更新や、新しく生まれた実験をお知らせします。"/><section className="news-page-list">{items.map((item,i)=><a href={item.link_url||"#"} target={item.link_url?"_blank":undefined} rel={item.link_url?"noreferrer":undefined} key={item.id}><b>{String(items.length-i).padStart(2,"0")}</b><time>{newsDate(item.published_at)}</time><div><h2>{item.title}</h2>{item.body&&<p>{item.body}</p>}</div><span>→</span></a>)}</section></>}
+function AboutPage(){return <><PublicTitle en="ABOUT" ja="見方を、すこしだけずらす。" lead="FROM BIRDは、答えを教える場所ではありません。自分の見方を、自分で見つけるための実験室です。"/><section className="about-statement"><span>FROM ANOTHER VIEW.</span><h2>ことばから。<br/>かたちから。<br/>世界はひらける。</h2><p>同じものを見ても、残る言葉や色、気になる問いは人によって違います。FROM BIRDでは、小さなツールを行き来しながら、その違いを作品や記録として残していきます。</p></section><section className="about-values"><article><span>01</span><h3>THINK</h3><p>答えを急がず、まず問いを眺める。</p></article><article><span>02</span><h3>PLAY</h3><p>うまく作るより、試してみる。</p></article><article><span>03</span><h3>EXPLORE</h3><p>残った痕跡から、自分の視点を見つける。</p></article></section><section className="public-cta"><p>あなたの変化を残すために。</p><h2>いろんな入口から考えるほど、<br/>自分の輪郭が見えてくる。</h2><a href="/signup" onClick={nav("/signup")}>アカウントをつくる →</a></section></>}
+function ContactPage(){function send(e:FormEvent<HTMLFormElement>){e.preventDefault();const fd=new FormData(e.currentTarget);const subject=encodeURIComponent(`[FROM BIRD] ${String(fd.get("subject")||"お問い合わせ")}`);const body=encodeURIComponent(`お名前：${String(fd.get("name")||"")}\nメール：${String(fd.get("email")||"")}\n\n${String(fd.get("message")||"")}`);location.href=`mailto:hello@frombird.com?subject=${subject}&body=${body}`}return <><PublicTitle en="CONTACT" ja="話しかける。" lead="ご質問、感想、いっしょに考えてみたいこと。こちらからお聞かせください。"/><section className="contact-layout"><div><span>BEFORE SENDING</span><h2>まだ言葉になっていなくても、<br/>だいじょうぶです。</h2><p>内容を確認して、通常3営業日以内を目安にお返事します。</p><dl><dt>MAIL</dt><dd>hello@frombird.com</dd></dl></div><form onSubmit={send}><label>お名前<input name="name" required/></label><label>メールアドレス<input name="email" type="email" required/></label><label>件名<select name="subject"><option>サービスについて</option><option>作品・ツールについて</option><option>コラボレーションについて</option><option>その他</option></select></label><label>お問い合わせ内容<textarea name="message" rows={7} required/></label><button>メールを作成する <span>→</span></button><small>送信ボタンを押すと、お使いのメールアプリが開きます。</small></form></section></>}
 
 function Auth({route,user}:{route:string;user:User|null}){
   const mode=route.slice(1);const [loading,setLoading]=useState(false);const [message,setMessage]=useState("");const [error,setError]=useState("");
