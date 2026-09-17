@@ -1,0 +1,12 @@
+.complete-art{background:#edf1e7}
+.complete-symbol{position:absolute;width:360px;height:250px;top:29%;left:50%;transform:translateX(-50%)}
+.complete-symbol i{background:#77a58b55}
+.complete-symbol i:last-of-type{background:#7894de44}
+.complete-symbol b{position:absolute;top:84px;left:164px;font-size:2rem;transform:rotate(24deg)}
+.complete-copy{position:relative}
+.complete-check{display:grid;place-items:center;width:58px;height:58px;margin:28px 0 5px;border:1px solid #111;border-radius:50%;font:1.5rem Georgia,serif}
+.complete-copy h1{font-size:clamp(2.5rem,4.5vw,4.6rem);line-height:1.25}
+.complete-button{display:block;margin:31px 0 17px;padding:18px 23px;border-radius:999px;background:#111;color:#fff;font-weight:700;text-align:center}
+.complete-button i{float:right;font-style:normal}
+.complete-copy small{color:#6e6b65;font-size:.72rem}
+@media(max-width:900px){.complete-copy{min-height:calc(100vh - 76px)}}
