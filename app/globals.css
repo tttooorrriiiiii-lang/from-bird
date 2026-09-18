@@ -54,6 +54,22 @@
 .about-bird-svg .svg-orb-neck,.about-bird-svg .svg-orb{fill:#f6f4ec}
 /* Reference-coordinate bird: preserve silhouette, with no rotation or internal padding. */
 /* Editorial subpages: composition follows the approved four-page reference. */
+.public-page .projects-editorial .flight-line{height:70px;top:8px;left:3%;width:94%;overflow:visible}
+.public-page .projects-editorial .flight-line path{stroke:#8b8881;stroke-width:.6;vector-effect:non-scaling-stroke}
+.projects-editorial .project-tile .tile-art:before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.68' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Cpath fill='%23888' filter='url(%23n)' d='M0 0h220v220H0z'/%3E%3C/svg%3E");background-size:150px;opacity:.4;mix-blend-mode:multiply;pointer-events:none}
+.projects-editorial #project-list{grid-auto-rows:minmax(250px,auto)}
+.projects-editorial #project-list>.project-tile:nth-child(n+6){grid-column:span 5;grid-row:auto}
+.contact-trap{position:absolute!important;left:-10000px;width:1px;height:1px;overflow:hidden}
+.contact-error{color:#9d3030;font-size:.8rem;line-height:1.7}
+.contact-night button:disabled{opacity:.55;cursor:wait}
+.news-detail,.contact-complete{max-width:820px;margin:50px auto 90px;padding:40px 28px;min-height:450px}
+.news-detail h1,.contact-complete h1{font:500 clamp(1.7rem,4vw,2.7rem)/1.6 "Yu Mincho",serif;margin:25px 0}
+.news-detail .eyebrow{margin-top:60px;font-size:.7rem;letter-spacing:.2em}
+.news-detail time{font-size:.8rem;color:#666}
+.news-body{white-space:pre-wrap;overflow-wrap:anywhere;font:1rem/2.2 "Yu Mincho",serif;margin:35px 0 60px}
+.contact-complete p{line-height:2}.contact-complete small{overflow-wrap:anywhere}.contact-complete nav{display:flex;gap:30px;flex-wrap:wrap;margin-top:45px}
+.news-detail a,.contact-complete a{text-decoration:underline;text-underline-offset:6px}
+@media(max-width:700px){.projects-editorial #project-list>.project-tile:nth-child(n+6){grid-column:auto}.news-detail,.contact-complete{padding:24px 8px}}
 .projects-editorial .flight-line{top:0;height:100px;pointer-events:none}
 .news-flight #news-list{height:auto;min-height:560px;padding-top:0}
 .news-flight #news-list>a{display:block;min-height:120px;height:auto;padding:28px 0 25px 12px;margin:0}
