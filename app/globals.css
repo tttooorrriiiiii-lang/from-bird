@@ -54,6 +54,23 @@
 .about-bird-svg .svg-orb-neck,.about-bird-svg .svg-orb{fill:#f6f4ec}
 /* Reference-coordinate bird: preserve silhouette, with no rotation or internal padding. */
 /* Editorial subpages: composition follows the approved four-page reference. */
+.projects-editorial .flight-line{top:0;height:100px;pointer-events:none}
+.news-flight #news-list{height:auto;min-height:560px;padding-top:0}
+.news-flight #news-list>a{display:block;min-height:120px;height:auto;padding:28px 0 25px 12px;margin:0}
+.news-flight #news-list>a>.news-stem{position:absolute;left:-50px;top:0;width:50px;height:100%;overflow:visible}
+.news-flight #news-list h2{padding-right:28px}
+.news-flight #news-list>a>b{position:absolute;right:0;bottom:20px;margin:0;font-weight:400}
+.about-view-diagram{position:absolute;right:4%;bottom:55px;width:24%;max-width:300px;height:auto;z-index:4}
+.public-about .about-sky{min-height:760px;max-height:none}
+.public-about .about-sky .about-bird-svg{width:54%;max-height:690px;left:35%;top:0;object-fit:contain}
+.contact-night>aside b{bottom:120px;left:0;right:auto;line-height:1.2}
+.contact-night>aside small{bottom:40px;left:0;right:auto;transform:none;line-height:1.8}
+@media(max-width:700px){
+.about-view-diagram{width:190px;max-width:48%;bottom:45px;right:15px}
+.public-about .about-sky{min-height:1020px}
+.public-about .about-sky .about-bird-svg{width:90%;left:5%;top:385px;max-height:none}
+.news-flight #news-list>a>.news-stem{left:-44px;width:44px}
+}
 .public-page:has(.contact-night){background:#102d45;color:#f7f5ef}
 .public-page:has(.contact-night)>.public-topbar,.public-page:has(.contact-night)>footer{background:transparent;color:inherit}
 .public-page:has(.contact-night) .member-link{border-color:currentColor}
